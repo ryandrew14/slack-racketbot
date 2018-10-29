@@ -4,6 +4,7 @@ class ApplicationController < ActionController::API
   def initialize()
     @client_id = ENV.fetch("CLIENT_ID")
     @client_secret = ENV.fetch("CLIENT_SECRET")
+    @job = 0
   end
 
   def info
@@ -71,6 +72,13 @@ class ApplicationController < ActionController::API
   end
 
   def rkt(code)
-    `racket -S /app/.apt/usr/share/racket/collects -e '#{code}'`.chomp
+    f = File.open((@job+=1).to_s, "w")
+    f.puts("#lang safe")
+    f.puts(code)
+    f.close
+    result = `racket -S lib -S /app/.apt/usr/share/racket/collects -f #{f.path}`.chomp
+    File.delete(f.path)
+    result
   end
+
 end
