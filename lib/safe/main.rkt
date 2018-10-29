@@ -1,7 +1,8 @@
 #lang racket
 
 (provide 
-  #%module-begin 
+  display
+  #%module-begin
   #%app 
   #%datum 
   #%top
@@ -26,7 +27,5 @@
 
 (module reader syntax/module-reader
   safe
-  #:read
-  read
-  #:read-syntax
-  read-syntax)
+  #:read read
+  #:read-syntax read-syntax)

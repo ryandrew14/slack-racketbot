@@ -76,7 +76,7 @@ class ApplicationController < ActionController::API
     f.puts("#lang safe")
     f.puts(code)
     f.close
-    result = `racket -S lib -S /app/.apt/usr/share/racket/collects -f #{f.path}`.chomp
+    result = `racket -S lib -S /app/.apt/usr/share/racket/collects -t #{f.path}`.chomp
     File.delete(f.path)
     result
   end
