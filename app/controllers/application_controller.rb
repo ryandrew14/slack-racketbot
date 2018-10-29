@@ -54,14 +54,21 @@ class ApplicationController < ActionController::API
 
     Thread.new do
       Rails.application.executor.wrap do
-        resend(par[:text], par[:response_url])
+        resend_code(par[:response_url], par[:text])
       end
     end
   end
 
-  def resend(code, url)
-    result = rkt(code)
-    HTTP.post(url, json: {
+  def resend_timeout(url, code)
+    resend_obj(url, {
+      response_type: "in_channel",
+      text: "Execution timed out while running '#{code}'.",
+    })
+  end
+
+  def resend_code(url, code)
+    result = rkt(url, code)
+    resend_obj(url, {
       response_type: "in_channel",
       text: "Result of running '#{code}':",
       attachments: [
@@ -72,17 +79,34 @@ class ApplicationController < ActionController::API
     })
   end
 
-  def rkt(code)
+  def resend_obj(url, obj)
+    HTTP.post(url, json: obj)
+  end
+
+  def rkt(url, code)
     f = File.open((@job+=1).to_s, "w")
     f.puts("#lang safe")
     f.puts(code)
     f.close
-    stdout, stderr, status = Open3.capture3("racket -S lib -S /app/.apt/usr/share/racket/collects -t #{f.path}")
+    res = {}
+    begin
+      Timeout::timeout(20) do
+        Timeout::timeout(15) do
+          stdout, stderr, status = Open3.capture3("racket -S lib -S /app/.apt/usr/share/racket/collects -t #{f.path}")
+          res = {stdout: stdout, stderr: stderr, status: status}
+        end
+      end
+    rescue
+      File.delete(f.path)
+      resend_timeout(url, code)
+      Thread::current.kill
+    end
+
     File.delete(f.path)
-    if status == 0
-      return stdout
+    if res[:status] == 0
+      return res[:stdout]
     else
-      return "ERROR\n#{stderr}"
+      return "ERROR\n#{res[:stderr]}"
     end
   end
 
