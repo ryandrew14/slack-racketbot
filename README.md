@@ -10,4 +10,4 @@ Be careful running this on a server you care about - it's currently a glorified 
 
 # Using the app
 
-Just use `/racket <code here>` in any channel you've given the bot access to.# README
+Just use `/racket <code here>` in any channel you've given the bot access to.
