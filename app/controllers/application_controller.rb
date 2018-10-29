@@ -1,4 +1,5 @@
 require "http"
+require "open3"
 
 class ApplicationController < ActionController::API
   def initialize()
@@ -76,9 +77,13 @@ class ApplicationController < ActionController::API
     f.puts("#lang safe")
     f.puts(code)
     f.close
-    result = `racket -S lib -S /app/.apt/usr/share/racket/collects -t #{f.path}`.chomp
+    stdout, stderr, status = Open3.capture3("racket -S lib -S /app/.apt/usr/share/racket/collects -t #{f.path}")
     File.delete(f.path)
-    result
+    if status == 0
+      return stdout
+    else
+      return "ERROR\n#{stderr}"
+    end
   end
 
 end
