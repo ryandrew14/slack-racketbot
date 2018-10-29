@@ -37,18 +37,30 @@ class ApplicationController < ActionController::API
 
   def api
     p params
-    par = 
-    code = params.permit(:text)[:text]
-    result = rkt(code)
+    par = params.permit(:text, :response_url)
     render json: {
+      response_type: "ephemeral",
+      text: "Running code. Please wait.",
+      attachments: [
+        {
+          text: par[:text]
+        }
+      ]
+    }
+    resend(par[:text], par[:response_url])
+  end
+
+  def resend(code, url)
+    result = rkt(code)
+    HTTP.post(url, params: {
       response_type: "in_channel",
-      text: "The result of running '" + code + "':",
+      text: "Result of running '#{code}':",
       attachments: [
         {
           text: result
         }
       ]
-    }
+    })
   end
 
   def rkt(code)
