@@ -1,3 +1,5 @@
+require "http"
+
 class ApplicationController < ActionController::API
   def initialize()
     @client_id = ENV.fetch("CLIENT_ID")
@@ -19,7 +21,7 @@ class ApplicationController < ActionController::API
       return
     end
     url = "https://slack.com/api/oauth.access"
-    response = HTTP.post(url, params: {
+    response = HTTP.post(url, json: {
       client_id: @client_id,
       client_secret: @client_secret,
       code: code
@@ -47,12 +49,17 @@ class ApplicationController < ActionController::API
         }
       ]
     }
-    resend(par[:text], par[:response_url])
+
+    Thread.new do
+      Rails.application.executor.wrap do
+        resend(par[:text], par[:response_url])
+      end
+    end
   end
 
   def resend(code, url)
     result = rkt(code)
-    HTTP.post(url, params: {
+    HTTP.post(url, json: {
       response_type: "in_channel",
       text: "Result of running '#{code}':",
       attachments: [
