@@ -37,6 +37,7 @@ class ApplicationController < ActionController::API
 
   def api
     p params
+    par = 
     code = params.permit(:text)[:text]
     result = rkt(code)
     render json: {
@@ -51,6 +52,6 @@ class ApplicationController < ActionController::API
   end
 
   def rkt(code)
-    `racket -e '#{code}'`.chomp
+    `racket -S /app/.apt/usr/share/racket/collects -e '#{code}'`.chomp
   end
 end
