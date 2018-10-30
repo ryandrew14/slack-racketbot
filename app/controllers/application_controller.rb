@@ -44,7 +44,7 @@ class ApplicationController < ActionController::API
     par = params.permit(:text, :response_url, :user, :user_id)
     text = par[:text]
     response_url = par[:response_url]
-    user = par[:user]
+    user_name = par[:user_name]
     user_id = par[:user_id]
     render json: {
       response_type: "in_channel",
@@ -56,7 +56,7 @@ class ApplicationController < ActionController::API
       ]
     }
 
-    exec = Execution.create(user_id: user_id, user: user, command: text, response_url: response_url)
+    exec = Execution.create(user_id: user_id, user_name: user_name, command: text, response_url: response_url)
 
     Thread.new do
       Rails.application.executor.wrap do
