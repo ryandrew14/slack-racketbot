@@ -1,9 +1,10 @@
 class CreateExecutions < ActiveRecord::Migration[5.2]
   def change
     create_table :executions do |t|
-      t.string :user
-      t.string :command
-      t.string :response_url
+      t.integer :user_id, null: false
+      t.string :user_name
+      t.string :command, null: false
+      t.string :response_url, null: false
 
       t.timestamps
     end

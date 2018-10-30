@@ -37,7 +37,7 @@ class Execution < ApplicationRecord
     result = rkt
     resend_obj({
       response_type: "in_channel",
-      text: "Result of running '#{command}':",
+      text: "Result:",
       attachments: [
         {
           text: result

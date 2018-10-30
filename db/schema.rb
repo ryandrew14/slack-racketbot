@@ -13,9 +13,10 @@
 ActiveRecord::Schema.define(version: 2018_10_29_162915) do
 
   create_table "executions", force: :cascade do |t|
-    t.string "user"
-    t.string "command"
-    t.string "response_url"
+    t.integer "user_id", null: false
+    t.string "user_name"
+    t.string "command", null: false
+    t.string "response_url", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

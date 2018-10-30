@@ -46,7 +46,7 @@ class ApplicationController < ActionController::API
     response_url = par[:response_url]
     user = par[:user]
     render json: {
-      response_type: "ephemeral",
+      response_type: "in_channel",
       text: "Running code. Please wait.",
       attachments: [
         {
