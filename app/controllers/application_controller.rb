@@ -8,12 +8,8 @@ class ApplicationController < ActionController::API
     @@job = 0
   end
 
-  def info
-    render html: "This is the API for Racket Helper."
-  end
-
   def index
-    render html: "Thanks for installing Racket Helper on your slack server."
+    render html: "This is the API for Racket Helper."
   end
 
   def auth
@@ -41,7 +37,7 @@ class ApplicationController < ActionController::API
 
   def api
     p params
-    par = params.permit(:text, :response_url, :user, :user_id)
+    par = params.permit(:text, :response_url, :user_name, :user_id)
     text = par[:text]
     response_url = par[:response_url]
     user_name = par[:user_name]
