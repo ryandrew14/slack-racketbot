@@ -7,6 +7,7 @@
   #%datum 
   #%top
 
+  define-struct
   if
   cond
   +
