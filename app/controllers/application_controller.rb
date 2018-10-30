@@ -23,7 +23,7 @@ class ApplicationController < ActionController::API
       return
     end
     url = "https://slack.com/api/oauth.access"
-    response = HTTP.post(url, json: {
+    response = HTTP.post(url, form: {
       client_id: @client_id,
       client_secret: @client_secret,
       code: code

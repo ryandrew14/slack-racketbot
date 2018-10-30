@@ -47,6 +47,6 @@ class Execution < ApplicationRecord
   end
 
   def resend_obj(obj)
-    HTTP.post(response_url, json: obj)
+    HTTP.post(response_url, form: obj)
   end
 end
