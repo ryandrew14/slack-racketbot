@@ -2,7 +2,7 @@
 
 Racket Helper is a Slack app to run the racket code that is passed to it as a "slash command".
 
-Be careful running this on a server you care about - it's currently a glorified `eval`.
+Any code sent to the bot is executed using a custom `#lang safe` which you can view at [/lib/safe/main.rkt](/lib/safe/main.rkt), to prevent calls to `system`, etc.
 
 # Adding the app to your slack server
 
