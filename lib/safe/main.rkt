@@ -7,6 +7,8 @@
   #%datum 
   #%top
 
+  =
+  zero?
   expt
   make-list
   define-struct
