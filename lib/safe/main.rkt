@@ -7,6 +7,9 @@
   #%datum 
   #%top
 
+  even?
+  sqr
+  positive?
   =
   zero?
   expt
