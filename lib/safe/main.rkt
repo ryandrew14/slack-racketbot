@@ -7,6 +7,7 @@
   #%datum 
   #%top
 
+  expt
   make-list
   define-struct
   if
