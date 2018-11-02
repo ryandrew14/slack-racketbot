@@ -7,6 +7,7 @@
   #%datum 
   #%top
 
+  sub1
   even?
   sqr
   positive?
