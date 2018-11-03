@@ -8,12 +8,8 @@ class ApplicationController < ActionController::API
     @@job = 0
   end
 
-  def info
-    render html: "This is the API for Racket Helper."
-  end
-
   def index
-    render html: "Thanks for installing Racket Helper on your slack server."
+    render html: "This is the API for Racket Helper."
   end
 
   def auth
